@@ -1,0 +1,21 @@
+@import "@assets/style/theme.scss";
+
+.content-view {
+  font-size: 30px;
+}
+
+#lah-login-popup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5cm;
+  z-index: 1000;
+}
+
+#lah-info-popup {
+  position: absolute;
+  top: 1cm;
+  right: 1cm;
+  padding: 0.5cm;
+  z-index: 1000;
+}

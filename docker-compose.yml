@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend:
+    image: lah-2022/backend
+    build: ./backend
+    ports: 
+      - "3500:3500"
+    environment:
+      - GOOGLE_OAUTH_CLIENT_ID
+      - GOOGLE_OAUTH_CLIENT_SECRET
+      - DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@db/$POSTGRES_DB?sslmode=disable
+      - COHERE_TOKEN
+      - COHERE_TOKEN_1
+    depends_on:
+      db:
+        condition: service_healthy
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=m.example@yarn.network
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "127.0.0.1:5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:alpine
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+
+volumes:
+  postgres-data:
+  pgadmin-data:
