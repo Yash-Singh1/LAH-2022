@@ -3,3 +3,8 @@ backend/ent/
 
 node_modules/
 dist-*.zip
+*.csv
+*.zip
+email-to-csv/ham/
+email-to-csv/hamnspam/
+email-to-csv/spam/
